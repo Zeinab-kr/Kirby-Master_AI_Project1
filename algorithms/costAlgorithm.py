@@ -29,9 +29,10 @@ class CostAlgorithm:
         depth = 0
 
         # TODO: define currentNode
-        currentNode = None
 
-        while not (currentNode.isGoal()):
+        currentNode = stack[0]
+
+        while not currentNode.isGoal():
             if not (kirbyPos[1] + 1 > 14) and currentNode.getState()[kirbyPos[0], kirbyPos[1] + 1] != 1:
                 son = Node(currentNode.getState(), currentNode,
                            "right", currentNode.getDepth() + 1, currentNode.getCost(), currentNode.getStar(), currentNode.getFlower())
@@ -41,6 +42,8 @@ class CostAlgorithm:
                 son.moveRight(kirbyPos)
                 if son.avoidGoBack2(right):
                     # TODO: Update the stack
+                    stack.append(son)
+
                     if son.getDepth() > depth:
                         depth = son.getDepth()
 
@@ -53,6 +56,8 @@ class CostAlgorithm:
                 son.moveLeft(kirbyPos)
                 if son.avoidGoBack2(left):
                     # TODO: Update the stack
+                    stack.append(son)
+
                     if son.getDepth() > depth:
                         depth = son.getDepth()
 
@@ -65,6 +70,8 @@ class CostAlgorithm:
                 son.moveDown(kirbyPos)
                 if son.avoidGoBack2(down):
                     # TODO: Update the stack
+                    stack.append(son)
+
                     if son.getDepth() > depth:
                         depth = son.getDepth()
 
@@ -77,16 +84,20 @@ class CostAlgorithm:
                 son.moveUp(kirbyPos)
                 if son.avoidGoBack2(up):
                     # TODO: Update the stack
+                    stack.append(son)
+
                     if son.getDepth() > depth:
                         depth = son.getDepth()
 
             # TODO: Update the stack
 
             # TODO: Implement your code here
-            currentNode = None
+            currentNode = getNodeMinCost(stack)
+            stack.remove(currentNode)
+
 
             expandedNodes += 1
-            kirbyPos = currentNode.getKirbyPos()
+            kirbyPos = currentNode.getKirbyPos() if currentNode else kirbyPos
 
         elapsedTime = process_time() - startTime
         elapsedTimeFormatted = "%.10f s." % elapsedTime
