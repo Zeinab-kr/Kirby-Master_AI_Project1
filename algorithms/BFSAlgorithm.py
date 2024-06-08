@@ -23,19 +23,28 @@ class BFS:
         depth = 0
 
         # TODO: define required variables here
-        currentNode = None
+        visited = []
+        stack = self.stack
+        currentNode = stack[0]
 
         while not currentNode.isGoal():
             possible_moves = find_possible_moves(currentNode)
             for move in possible_moves:
                 # TODO: Implement your code here
+                if move not in visited:
+                    visited.append(move)
+                    stack.append(move)
 
                 # Don't alter this
                 if move.getDepth() > depth:
                     depth = move.getDepth()
 
             # TODO: Implement your code here
-            currentNode = None
+            # Prioritize moves that collect stars and avoid koopas
+            #self.stack.sort(key=lambda x: -x.getStar())
+            #self.stack.sort(key=lambda x: x.getFlower(), reverse=True)
+
+            currentNode = self.stack.pop(0) if self.stack else None
 
             # Don't alter this
             expandedNodes += 1
